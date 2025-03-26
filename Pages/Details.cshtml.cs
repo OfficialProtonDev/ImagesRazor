@@ -1,30 +1,41 @@
 using ImagesRazor.Model;
+using ImagesRazor.Operations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ImagesRazor.Pages
 {
-    [BindProperties]
     public class DetailsModel : PageModel
     {
         public string? SelectedImgPath { get; set; }
-
-        public string? RandomImgPath { get; set; }
 
         public List<string>? ImgPaths { get; set; } = new List<string>();
 
         public string ImgDirectory { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\imgs");
 
+        public PersonDetails? SelectedStaff { get; set; }
+
+        public SelectList Staff { get; set; }
+
+        [BindProperty]
+        public int SelectedStaffId { get; set; } = 1;
+
         public void OnGet()
         {
-            ImgPaths = _loadImages();
-            RandomImgPath = _getRandomImage();
+            LoadData();
         }
 
         public void OnPost()
         {
+            LoadData();
+        }
+
+        public void LoadData()
+        {
+            Staff = new SelectList(StaticPersonDetails.StaticAllStaff, nameof(PersonDetails.Id), nameof(PersonDetails.Name), null);
+            SelectedStaff = _getPersonDetails();
             ImgPaths = _loadImages();
-            RandomImgPath = _getRandomImage();
         }
 
         private List<string>? _loadImages()
@@ -35,13 +46,26 @@ namespace ImagesRazor.Pages
             return _imgFiles.Select(Path.GetFileName).ToList();
         }
 
-        private string? _getRandomImage()
+        private PersonDetails? _getPersonDetails()
         {
-            if (ImgPaths == null || ImgPaths.Count == 0) return null;
+            if (!ModelState.IsValid) return null;
 
-            Random _random = new Random();
-            int _index = _random.Next(ImgPaths.Count);
-            return ImgPaths[_index];
+            PersonDetails? _selectedStaff = new PersonDetails();
+
+            foreach (var item in StaticPersonDetails.StaticAllStaff)
+            {
+                if (SelectedStaffId == item.Id)
+                {
+                    _selectedStaff.Id = item.Id;
+                    _selectedStaff.Name = item.Name;
+                    _selectedStaff.Age = item.Age;
+                    _selectedStaff.FaceImgPath = item.FaceImgPath;
+                    _selectedStaff.Occupation = item.Occupation;
+                }
+            }
+
+            return _selectedStaff;
+
         }
     }
 }

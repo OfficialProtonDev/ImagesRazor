@@ -6,7 +6,7 @@
 
 <div class="card" style=" margin-top: 20px">
     <div class="card-header">
-        <h2>Displaying Person details</h2>
+        <h2>Displaying Person Details</h2>
         <p>
             Look at <a href="https://www.learnrazorpages.com/razor-pages/forms/select-lists">
                 Select
@@ -25,13 +25,13 @@
     </div>
     <div class="card-footer">
         <div class="row">
-            @if (Model.SelectedStaff.Name != null)
+            @if (@Model.SelectedStaff.Name != null)
             {
                 <h3>Personal details</h3>
                 <p class="card-text">Name @Model.SelectedStaff.Name </p>
                 <p class="card-text">Age @Model.SelectedStaff.Age</p>
                 <p class="card-text">Occupation @Model.SelectedStaff.Occupation</p>
-                <img src="~/images/@Model.SelectedStaff.ImagePath" class="card-img-top img-fluid imgthumbnail rounded mx-auto d-block" />
+                <img src="~/imgs/@Model.SelectedStaff.FaceImgPath" class="card-img-top img-fluid imgthumbnail rounded mx-auto d-block" />
             }
         </div>
     </div>
