@@ -6,25 +6,33 @@
 
 <div class="card" style=" margin-top: 20px">
     <div class="card-header">
-        <h1>Displaying an Image On the Fly</h1>
-        <h3>Get random faces <a href="https://generated.photos/">Here </a> </h3>
+        <h2>Displaying Person details</h2>
+        <p>
+            Look at <a href="https://www.learnrazorpages.com/razor-pages/forms/select-lists">
+                Select
+                lists
+            </a>
+        </p>
     </div>
     <div class="card-body">
         <form method="post" action="">
-            <h3>
-                I want to see:
-                <select asp-for="SelectedImgPath" asp-items="@(new SelectList(Model.ImgPaths))">
-                    <option selected="selected" disabled="disabled" value="">Select a face</option>
-                    <option value="@Model.RandomImgPath">Random Face</option>
-                </select>
-                <input type="submit" value="Submit" />
-            </h3>
+
+            I want to see:
+            <select asp-for="@Model.SelectedStaffId" asp-items="@Model.Staff">
+            </select>
+            <input type="submit" value="Submit" />
         </form>
     </div>
     <div class="card-footer">
-        <h3>The generated face</h3>
         <div class="row">
-            <img src="~/imgs/@Model.SelectedImgPath" class="card-img-top img-fluid img-thumbnail rounded mx-auto d-block" />
+            @if (Model.SelectedStaff.Name != null)
+            {
+                <h3>Personal details</h3>
+                <p class="card-text">Name @Model.SelectedStaff.Name </p>
+                <p class="card-text">Age @Model.SelectedStaff.Age</p>
+                <p class="card-text">Occupation @Model.SelectedStaff.Occupation</p>
+                <img src="~/images/@Model.SelectedStaff.ImagePath" class="card-img-top img-fluid imgthumbnail rounded mx-auto d-block" />
+            }
         </div>
     </div>
 </div>
